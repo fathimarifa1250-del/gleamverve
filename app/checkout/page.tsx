@@ -232,13 +232,19 @@ TOTAL: ₹${total}
           </div>
 
           {/* SUMMARY */}
-          <div className="mt-8 border-t pt-6 space-y-2">
-            <p>Subtotal: ₹{subtotal}</p>
-            <p>Shipping: ₹{shipping}</p>
-            <p>Discount: ₹{discount}</p>
-            <p className="font-bold text-lg">
-              Total: ₹{total}
-            </p>
+          <div className="flex justify-between"> 
+            <span>Subtotal</span>
+            <span>₹{subtotal}</span> 
+          </div> <div className="flex justify-between"> 
+            <span>Shipping</span> 
+            <span>₹{shipping}</span> 
+          </div> <div className="flex justify-between"> 
+            <span>Discount</span> 
+            <span>-₹{discount}</span> 
+          </div> <div className="flex justify-between font-bold text-lg mt-2"> 
+            <span>Total</span> 
+            <span>₹{total}</span> 
+          </div> 
           </div>
 
           {/* BUTTON (FORCE VISIBLE) */}
