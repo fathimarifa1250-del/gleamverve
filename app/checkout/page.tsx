@@ -152,7 +152,7 @@ TOTAL: ₹${total}
 Thank you for shopping with GleamVerve 💛
 `;
 
-    const url = `https://wa.me/9072457619?text=${encodeURIComponent(
+    const url = `https://wa.me/919072457619?text=${encodeURIComponent(
       message
     )}`;
 
