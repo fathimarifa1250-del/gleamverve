@@ -18,18 +18,18 @@ export default function CheckoutPage() {
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  // VALIDATION
-  const isFormValid =
-    name && phone && address && city && pin && cart.length > 0;
+  // FIXED VALIDATION (IMPORTANT)
+  const isFormValid = Boolean(
+    name && phone && address && city && pin && cart.length > 0
+  );
 
   // SUBTOTAL
   const subtotal = cart.reduce(
-    (sum: number, item: any) =>
-      sum + item.price * item.quantity,
+    (sum: number, item: any) => sum + item.price * item.quantity,
     0
   );
 
-  // SHIPPING LOGIC
+  // SHIPPING
   let shipping = 0;
 
   if (state === "kerala") {
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
     }
   }
 
-  // APPLY COUPON
+  // COUPON
   const applyCoupon = () => {
     const code = coupon.trim().toUpperCase();
 
@@ -81,54 +81,54 @@ export default function CheckoutPage() {
 
   // PLACE ORDER
   const placeOrder = async () => {
-  if (!isFormValid) {
-    alert("Please fill all details and add items to cart.");
-    return;
-  }
+    console.log("Order clicked");
 
-  const orderId = "GV" + Date.now();
-
-  const itemsText = cart
-    .map(
-      (item: any) =>
-        `- ${item.name} x${item.quantity} = ₹${item.price * item.quantity}`
-    )
-    .join("\n");
-
-  const appliedCoupon =
-    discount > 0 ? coupon.trim().toUpperCase() : "NONE";
-
-  // GOOGLE SHEETS
-  await fetch(
-    "https://script.google.com/macros/s/AKfycbx7voLfzB8aFrv0sj_Ul5Ryq7g0AXkbq9_Q8okCpecp9xbUk6yJL_rbqfgE0a6zecrbOA/exec",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        orderId,
-        name,
-        phone,
-        address: `${address}, ${city} - ${pin}, ${state}`,
-        items: itemsText,
-        subtotal,
-        shipping,
-        discount,
-        total,
-      }),
+    if (!isFormValid) {
+      alert("Fill all details first");
+      return;
     }
-  );
 
-  // WHATSAPP MESSAGE (FIXED)
-  const message = encodeURIComponent(`
+    const orderId = "GV" + Date.now();
+
+    const itemsText = cart
+      .map(
+        (item: any) =>
+          `- ${item.name} x${item.quantity} = ₹${item.price * item.quantity}`
+      )
+      .join("\n");
+
+    const appliedCoupon = discount > 0 ? coupon : "NONE";
+
+    // Google Sheets
+    await fetch(
+      "https://script.google.com/macros/s/AKfycbx7voLfzB8aFrv0sj_Ul5Ryq7g0AXkbq9_Q8okCpecp9xbUk6yJL_rbqfgE0a6zecrbOA/exec",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId,
+          name,
+          phone,
+          address: `${address}, ${city} - ${pin}, ${state}`,
+          items: itemsText,
+          subtotal,
+          shipping,
+          discount,
+          total,
+        }),
+      }
+    );
+
+    // WhatsApp
+    const message = encodeURIComponent(`
 ✨ GLEAMVERVE ORDER ✨
 
 Order ID: ${orderId}
 
-Customer:
-${name}
-${phone}
+Name: ${name}
+Phone: ${phone}
 
 Address:
 ${address}
@@ -144,12 +144,113 @@ Coupon: ${appliedCoupon}
 Discount: -₹${discount}
 
 TOTAL: ₹${total}
-
-Thank you for shopping with GleamVerve 💛
 `);
 
-  const url = `https://wa.me/919072457619?text=${message}`;
+    const url = `https://wa.me/919072457619?text=${message}`;
 
-  // IMPORTANT FIX (no popup issues)
-  window.location.href = url;
-};
+    window.location.href = url;
+  };
+
+  return (
+    <main className="min-h-screen bg-[#f5eee6] text-[#5a422a] px-6 md:px-20 py-20">
+      <div className="max-w-4xl mx-auto">
+
+        <h1 className="text-5xl font-serif mb-10">
+          Checkout
+        </h1>
+
+        <div className="bg-white rounded-[2rem] p-8 border border-[#eadfce]">
+
+          {/* FORM */}
+          <div className="grid gap-5">
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Full Name"
+              className="border p-4 rounded-xl"
+            />
+
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Phone Number"
+              className="border p-4 rounded-xl"
+            />
+
+            <textarea
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+              className="border p-4 rounded-xl h-28"
+            />
+
+            <input
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="City"
+              className="border p-4 rounded-xl"
+            />
+
+            <input
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              placeholder="PIN Code"
+              className="border p-4 rounded-xl"
+            />
+
+            <select
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              className="border p-4 rounded-xl"
+            >
+              <option value="kerala">Kerala</option>
+              <option value="tamil-nadu">Tamil Nadu</option>
+              <option value="karnataka">Karnataka</option>
+              <option value="delhi">Delhi</option>
+              <option value="maharashtra">Maharashtra</option>
+              <option value="rajasthan">Rajasthan</option>
+              <option value="jammu-kashmir">Jammu & Kashmir</option>
+              <option value="ladakh">Ladakh</option>
+              <option value="international">International</option>
+            </select>
+          </div>
+
+          {/* COUPON */}
+          <div className="flex gap-2 mt-6">
+            <input
+              value={coupon}
+              onChange={(e) => setCoupon(e.target.value)}
+              placeholder="Coupon Code"
+              className="flex-1 border p-3 rounded-xl"
+            />
+            <button
+              onClick={applyCoupon}
+              className="bg-[#5a422a] text-white px-6 rounded-xl"
+            >
+              Apply
+            </button>
+          </div>
+
+          {/* SUMMARY */}
+          <div className="mt-8 border-t pt-6 space-y-2">
+            <p>Subtotal: ₹{subtotal}</p>
+            <p>Shipping: ₹{shipping}</p>
+            <p>Discount: ₹{discount}</p>
+            <p className="font-bold text-lg">
+              Total: ₹{total}
+            </p>
+          </div>
+
+          {/* BUTTON (FORCE VISIBLE) */}
+          <button
+            onClick={placeOrder}
+            className="w-full mt-6 py-4 rounded-full bg-[#5a422a] text-white"
+          >
+            Place Order via WhatsApp
+          </button>
+
+        </div>
+      </div>
+    </main>
+  );
+}
