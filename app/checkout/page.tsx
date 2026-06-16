@@ -160,7 +160,7 @@ Thank you for shopping with GleamVerve 💛
   };
 
   return (
-    <main className="min-h-screen bg-[#f5eee6] px-6 md:px-20 py-20">
+    <main className="min-h-screen bg-[#f5eee6] text-[#5a422a] px-6 md:px-20 py-20">
       <div className="max-w-4xl mx-auto">
 
         <h1 className="text-5xl font-serif text-[#5a422a] mb-10">
