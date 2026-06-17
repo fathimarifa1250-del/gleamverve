@@ -83,6 +83,7 @@ export default function CheckoutPage() {
       }
     );
 
+    // ✅ SINGLE MESSAGE ONLY (FIXED)
     const message = encodeURIComponent(`
 ✨ GLEAMVERVE ORDER ✨
 
@@ -148,7 +149,7 @@ TOTAL: ₹${total}
             </button>
           </div>
 
-          {/* SUMMARY (FIXED STRUCTURE) */}
+          {/* SUMMARY */}
           <div className="mt-8 space-y-2 border-t pt-6">
             <div className="flex justify-between"><span>Subtotal</span><span>₹{subtotal}</span></div>
             <div className="flex justify-between"><span>Shipping</span><span>₹{shipping}</span></div>
@@ -156,7 +157,7 @@ TOTAL: ₹${total}
             <div className="flex justify-between font-bold text-lg"><span>Total</span><span>₹{total}</span></div>
           </div>
 
-          {/* BUTTON (NOW INSIDE PROPER STRUCTURE) */}
+          {/* BUTTON */}
           <button
             onClick={placeOrder}
             className="w-full mt-6 py-4 rounded-full bg-[#5a422a] text-white"
