@@ -4,7 +4,7 @@ import { useCart } from "../../context/CartContext";
 import { useState } from "react";
 
 export default function CheckoutPage() {
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -15,6 +15,7 @@ export default function CheckoutPage() {
 
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const subtotal = cart.reduce(
     (sum: number, item: any) => sum + item.price * item.quantity,
@@ -53,45 +54,51 @@ export default function CheckoutPage() {
   };
 
   const placeOrder = async () => {
-    if (!isFormValid) {
-      alert("Please fill all details.");
-      return;
+  if (!isFormValid) {
+    alert("Please fill all details.");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const orderId = "GV" + Date.now();
+
+    const itemsText = cart
+      .map(
+        (item: any) =>
+          `• ${item.name} x${item.quantity} = ₹${item.price * item.quantity}`
+      )
+      .join("\n");
+
+    const appliedCoupon =
+  discount > 0 ? coupon.trim().toUpperCase() : "NONE";
+
+    const response = await fetch("/api/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderId,
+        name,
+        phone,
+        address: `${address}, ${city} - ${pin}, ${state}`,
+        items: itemsText,
+        subtotal,
+        shipping,
+        discount,
+        total,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error("Failed to save order.");
     }
 
-    try {
-      const orderId = "GV" + Date.now();
-
-      const itemsText = cart
-        .map(
-          (item: any) =>
-            `• ${item.name} x${item.quantity} = ₹${item.price * item.quantity}`
-        )
-        .join("\n");
-
-      const appliedCoupon = discount > 0 ? coupon : "NONE";
-
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbx7voLfzB8aFrv0sj_Ul5Ryq7g0AXkbq9_Q8okCpecp9xbUk6yJL_rbqfgE0a6zecrbOA/exec",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderId,
-            name,
-            phone,
-            address: `${address}, ${city}, ${pin}, ${state}`,
-            items: itemsText,
-            subtotal,
-            shipping,
-            discount,
-            total,
-          }),
-        }
-      );
-
-      const message = encodeURIComponent(`
+    const message = encodeURIComponent(`
 ✨ GLEAMVERVE ORDER ✨
 
 Order ID: ${orderId}
@@ -115,13 +122,16 @@ Discount: -₹${discount}
 
 TOTAL: ₹${total}
 `);
+     clearCart();
+    window.location.href = `https://wa.me/919072457619?text=${message}`;
 
-      window.location.href = `https://wa.me/919072457619?text=${message}`;
-    } catch (err) {
-      console.error(err);
-      alert("Checkout failed.");
-    }
-  };
+  } catch (err) {
+    console.error("Checkout Error:", err);
+    alert("Failed to place order. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <main className="min-h-screen bg-[#f5eee6] text-[#5a422a] px-6 md:px-20 py-20">
@@ -244,16 +254,16 @@ TOTAL: ₹${total}
             </div>
 
             <button
-              onClick={placeOrder}
-              disabled={!isFormValid}
-              className={`mt-8 py-4 rounded-xl text-lg font-semibold transition ${
-                isFormValid
-                  ? "bg-black text-white hover:bg-gray-800"
-                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
-              }`}
-            >
-              Place Order on WhatsApp
-            </button>
+  onClick={placeOrder}
+  disabled={!isFormValid || loading}
+  className={`mt-8 py-4 rounded-xl text-lg font-semibold transition ${
+    !isFormValid || loading
+      ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+      : "bg-black text-white hover:bg-gray-800"
+  }`}
+>
+  {loading ? "Placing Order..." : "Place Order on WhatsApp"}
+</button>
 
           </div>
         </div>
