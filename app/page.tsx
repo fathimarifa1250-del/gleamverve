@@ -6,12 +6,12 @@ import CartDrawer from "../components/CartDrawer";
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-[#f5eee6]">
       <Navbar />
-      <CartDrawer />
       <Hero />
       <Collections />
       <ProductGrid />
+      <CartDrawer />
     </main>
   );
 }

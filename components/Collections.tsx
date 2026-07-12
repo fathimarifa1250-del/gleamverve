@@ -1,22 +1,29 @@
 const collections = [
   {
     title: "Rings",
-    image: "/images/rings.jpg",
+    image: "/images/collections/Rings.jpg",
   },
   {
     title: "Necklaces",
-    image: "/images/necklaces.jpg",
+    image: "/images/collections/Necklaces.jpg",
   },
   {
     title: "Bracelets",
-    image: "/images/bracelets.jpg",
+    image: "/images/collections/Bracelet.jpg",
   },
   {
-    title: "Accessories",
-    image: "/images/accessories.jpg",
+    title: "Bangles",
+    image: "/images/collections/Bangles.jpg",
+  },
+  {
+    title: "Studs",
+    image: "/images/collections/Studs.jpg",
+  },
+  {
+    title: "cuff",
+    image: "/images/collections/cuff.jpg",
   },
 ];
-
 export default function Collections() {
   return (
     <section className="bg-[#f5eee6] px-6 md:px-20 py-28">
