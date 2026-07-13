@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const collections = [
   {
     title: "Rings",
@@ -20,55 +22,57 @@ const collections = [
     image: "/images/collections/Studs.jpg",
   },
   {
-    title: "cuff",
+    title: "Cuff",
     image: "/images/collections/cuff.jpg",
   },
 ];
+
 export default function Collections() {
   return (
-    <section className="bg-[#f5eee6] px-6 md:px-20 py-28">
+    <section className="bg-[#f5eee6] px-4 md:px-20 py-12 md:py-20">
 
-      <div className="mb-16">
+      <div className="mb-8 md:mb-10">
 
-        <p className="uppercase tracking-[0.3em] text-sm text-[#5a422a] mb-4">
+        <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-[#5a422a] mb-3">
           Collections
         </p>
 
-        <h2 className="text-4xl md:text-6xl text-[#5a422a] font-serif">
+        <h2 className="text-2xl md:text-5xl text-[#5a422a] font-serif">
           Curated for every moment.
         </h2>
 
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
 
         {collections.map((item) => (
-          <div
+          <Link
+            href={`/collections/${item.title.toLowerCase()}`}
             key={item.title}
-            className="group relative overflow-hidden rounded-[2rem]"
+            className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] block"
           >
 
             <img
               src={item.image}
               alt={item.title}
-              className="h-[500px] w-full object-cover group-hover:scale-105 transition duration-700"
+              className="h-[220px] md:h-[380px] w-full object-cover group-hover:scale-105 transition duration-700"
             />
 
-            <div className="absolute inset-0 bg-black/20" />
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition" />
 
-            <div className="absolute bottom-8 left-8">
+            <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8">
 
-              <h3 className="text-white text-3xl font-serif mb-2">
+              <h3 className="text-white text-lg md:text-3xl font-serif mb-2">
                 {item.title}
               </h3>
 
-              <button className="text-white border border-white px-6 py-2 rounded-full hover:bg-white hover:text-black transition">
+              <button className="text-xs md:text-base text-white border border-white px-4 md:px-6 py-2 rounded-full hover:bg-white hover:text-black transition">
                 Explore
               </button>
 
             </div>
 
-          </div>
+          </Link>
         ))}
 
       </div>

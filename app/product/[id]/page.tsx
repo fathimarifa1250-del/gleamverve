@@ -1,4 +1,5 @@
 import ProductDetails from "@/components/ProductDetails";
+import RelatedProducts from "@/components/RelatedProducts";
 
 async function getProduct(id: string) {
   const res = await fetch(
@@ -26,7 +27,14 @@ export default async function ProductPage({
 
   return (
     <main className="min-h-screen bg-[#f5eee6] px-6 md:px-20 py-20">
+
       <ProductDetails product={product} />
+
+      <RelatedProducts
+        category={product.Category}
+        currentId={product["Product ID"]}
+      />
+
     </main>
   );
 }
