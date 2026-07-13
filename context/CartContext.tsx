@@ -12,32 +12,32 @@ export function CartProvider({
   const [cart, setCart] = useState<any[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const addToCart = (product: any) => {
-    const existing = cart.find(
-      (item) => item.id === product.id
-    );
+  const addToCart = (product: any, quantity: number = 1) => {
+  const existing = cart.find(
+    (item) => item.id === product.id
+  );
 
-    if (existing) {
-      setCart(
-        cart.map((item) =>
-          item.id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item
-        )
-      );
-    } else {
-      setCart([
-        ...cart,
-        {
-          ...product,
-          quantity: 1,
-        },
-      ]);
-    }
-  };
+  if (existing) {
+    setCart(
+      cart.map((item) =>
+        item.id === product.id
+          ? {
+              ...item,
+              quantity: item.quantity + quantity,
+            }
+          : item
+      )
+    );
+  } else {
+    setCart([
+      ...cart,
+      {
+        ...product,
+        quantity,
+      },
+    ]);
+  }
+};
 
   const removeFromCart = (id: string) => {
     setCart(
