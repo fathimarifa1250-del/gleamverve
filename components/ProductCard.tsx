@@ -37,9 +37,9 @@ export default function ProductCard({
 
       </div>
 
-      <div className="mt-3 md:mt-6">
+      <div className="mt-2 md:mt-5">
 
-        <h3 className="text-sm md:text-xl font-serif text-[#5a422a] leading-tight">
+        <h3 className="text-[15px] md:text-xl font-serif text-[#5a422a] leading-tight">
           {product.Name}
         </h3>
 

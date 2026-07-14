@@ -25,13 +25,17 @@ const collections = [
     title: "Cuff",
     image: "/images/collections/cuff.jpg",
   },
+  {
+    title: "combo",
+    image: "/images/collections/combo.jpg",
+  },
 ];
 
 export default function Collections() {
   return (
-    <section className="bg-[#f5eee6] px-4 md:px-20 py-12 md:py-20">
+    <section className="bg-[#f5eee6] px-4 md:px-20 pt-0 pb-0">
 
-      <div className="mb-8 md:mb-10">
+      <div className="mb-4 md:mb-6">
 
         <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-[#5a422a] mb-3">
           Collections
@@ -43,7 +47,7 @@ export default function Collections() {
 
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+      <div className="grid grid-cols-2 gap-3 md:gap-6">
 
         {collections.map((item) => (
           <Link
@@ -53,9 +57,9 @@ export default function Collections() {
           >
 
             <img
-              src={item.image}
-              alt={item.title}
-              className="h-[220px] md:h-[380px] w-full object-cover group-hover:scale-105 transition duration-700"
+            src={item.image}
+            alt={item.title}
+           className="h-[235px] md:h-[380px] w-full object-cover group-hover:scale-105 transition duration-700"
             />
 
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition" />

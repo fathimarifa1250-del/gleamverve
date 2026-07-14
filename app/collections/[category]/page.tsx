@@ -1,9 +1,16 @@
 import ProductCard from "@/components/ProductCard";
+ import { headers } from "next/headers";
 
 async function getProducts() {
-  const res = await fetch("http://localhost:3000/api/products", {
+  const host = (await headers()).get("host");
+
+  const res = await fetch(`http://${host}/api/products`, {
     cache: "no-store",
   });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
 
   return res.json();
 }

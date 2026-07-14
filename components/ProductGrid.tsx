@@ -25,7 +25,7 @@ export default function ProductGrid() {
 
   if (loading) {
     return (
-      <section className="bg-[#f5eee6] px-4 md:px-20 py-12 md:py-20">
+      <section className="bg-[#f5eee6] px-4 md:px-20 pt-1 md:pt-3 pb-10 md:pb-14">
         <h2 className="text-2xl md:text-5xl font-serif text-[#5a422a]">
           Loading Products...
         </h2>
@@ -36,7 +36,7 @@ export default function ProductGrid() {
   return (
     <section className="bg-[#f5eee6] px-4 md:px-20 py-12 md:py-20">
 
-      <div className="mb-10 md:mb-16">
+      <div className="mb-4 md:mb-6">
         <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-[#5a422a] mb-3">
           Shop
         </p>
@@ -46,7 +46,7 @@ export default function ProductGrid() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
 
         {products
           .filter((product) => product.Status === "Active")
