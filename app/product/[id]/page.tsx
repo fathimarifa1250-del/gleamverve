@@ -26,7 +26,7 @@ export default async function ProductPage({
   const product = await getProduct(id);
 
   return (
-    <main className="min-h-screen bg-[#f5eee6] px-6 md:px-20 py-20">
+    <main className="min-h-screen bg-[#f5eee6] px-6 md:px-20 pt-10 pb-20 md:py-20">
 
       <ProductDetails product={product} />
 

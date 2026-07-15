@@ -29,11 +29,15 @@ const collections = [
     title: "combo",
     image: "/images/collections/combo.jpg",
   },
+  {
+    title: "hoops",
+    image: "/images/collections/hoops.jpg",
+  },
 ];
 
 export default function Collections() {
   return (
-    <section className="bg-[#f5eee6] px-4 md:px-20 pt-0 pb-0">
+    <section className="bg-[#f5eee6] px-4 md:px-20 pt-0 pb-8">
 
       <div className="mb-4 md:mb-6">
 

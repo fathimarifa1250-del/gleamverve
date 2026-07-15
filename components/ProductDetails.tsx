@@ -88,24 +88,27 @@ router.push("/checkout");
 };
 
 return ( <div 
-className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-10 lg:gap-16 items-start">
+className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
   {/* PRODUCT IMAGE */}
-<div>
-  <div className="overflow-hidden rounded-[2rem]">
+<div className="w-full max-w-[520px] mx-auto lg:mx-0">
 
-  <img
-    src={`/images/products/${selectedImage}`}
-    alt={product.Name}
-    className={`w-full object-cover transition-all duration-500 hover:scale-110 cursor-zoom-in ${
-      imageVisible
-        ? "opacity-100 scale-100"
-        : "opacity-0 scale-[0.98]"
-    }`}
-  />
-    </div>
- {/* Thumbnail Gallery */}
-  <div className="flex gap-4 mt-6 flex-wrap">
+  <div className="aspect-square overflow-hidden rounded-[2rem] bg-white shadow-sm">
+
+    <img
+      src={`/images/products/${selectedImage}`}
+      alt={product.Name}
+      className={`w-full h-full object-cover transition-all duration-500 hover:scale-105 ${
+        imageVisible
+          ? "opacity-100 scale-100"
+          : "opacity-0 scale-[0.98]"
+      }`}
+    />
+
+  </div>
+
+  {/* Thumbnail Gallery */}
+  <div className="flex justify-center gap-4 mt-5 flex-wrap">
 
     <button
       onClick={() => changeImage(product["Main Image"])}
@@ -117,7 +120,7 @@ className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-10 lg:gap-16 items-start"
     >
       <img
         src={`/images/products/${product["Main Image"]}`}
-        className="w-20 h-20 object-cover"
+        className="w-16 h-16 object-contain p-1"
       />
     </button>
 
@@ -133,7 +136,7 @@ className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-10 lg:gap-16 items-start"
       >
         <img
           src={`/images/products/${image}`}
-          className="w-20 h-20 object-cover"
+          className="w-16 h-16 object-contain p-1"
         />
       </button>
     ))}
