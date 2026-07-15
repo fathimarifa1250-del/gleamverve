@@ -15,6 +15,7 @@ const router = useRouter();
 const [quantity, setQuantity] = useState(1);
 const [added, setAdded] = useState(false);
 const [openSection, setOpenSection] = useState("details");
+
 const gallery =
   product["Image Gallery"]
     ?.split("|")
@@ -27,9 +28,20 @@ const gallery =
 const [selectedImage, setSelectedImage] = useState(
   product["Main Image"]
 );
+
+const [touchStart, setTouchStart] = useState<number | null>(null);
+
+const images = [
+  product["Main Image"],
+  ...gallery,
+];
+
+const currentIndex = images.indexOf(selectedImage);
+
 const [imageVisible, setImageVisible] = useState(true);
+
 const cartItem = cart.find(
-(item: any) => item.id === product["Product ID"]
+  (item: any) => item.id === product["Product ID"]
 );
 
 const cartQuantity = cartItem?.quantity ?? 0;
@@ -38,9 +50,9 @@ const price = Number(product.Price);
 const discount = Number(product["Discount %"] || 0);
 
 const salePrice =
-discount > 0
-? Math.round(price * (1 - discount / 100))
-: price;
+  discount > 0
+    ? Math.round(price * (1 - discount / 100))
+    : price;
 
 const changeImage = (image: string) => {
   if (image === selectedImage) return;
@@ -51,6 +63,28 @@ const changeImage = (image: string) => {
     setSelectedImage(image);
     setImageVisible(true);
   }, 150);
+};
+
+const handleTouchEnd = (e: React.TouchEvent) => {
+  if (touchStart === null) return;
+
+  const touchEnd = e.changedTouches[0].clientX;
+  const distance = touchStart - touchEnd;
+
+  // Ignore very small swipes
+  if (Math.abs(distance) < 50) return;
+
+  // Swipe left → Next image
+  if (distance > 0 && currentIndex < images.length - 1) {
+    changeImage(images[currentIndex + 1]);
+  }
+
+  // Swipe right → Previous image
+  if (distance < 0 && currentIndex > 0) {
+    changeImage(images[currentIndex - 1]);
+  }
+
+  setTouchStart(null);
 };
 
 const handleAddToCart = () => {
@@ -90,57 +124,28 @@ router.push("/checkout");
 return ( <div 
 className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
-  {/* PRODUCT IMAGE */}
+{/* PRODUCT IMAGE */}
 <div className="w-full max-w-[520px] mx-auto lg:mx-0">
 
-  <div className="aspect-square overflow-hidden rounded-[2rem] bg-white shadow-sm">
-
+  <div
+    className="aspect-square overflow-hidden rounded-[2rem] bg-white shadow-sm"
+    onTouchStart={(e) => setTouchStart(e.touches[0].clientX)}
+    onTouchEnd={handleTouchEnd}
+  >
     <img
       src={`/images/products/${selectedImage}`}
       alt={product.Name}
-      className={`w-full h-full object-cover transition-all duration-500 hover:scale-105 ${
+      className={`w-full h-full object-cover transition-all duration-500 ${
         imageVisible
           ? "opacity-100 scale-100"
           : "opacity-0 scale-[0.98]"
       }`}
     />
-
   </div>
 
   {/* Thumbnail Gallery */}
   <div className="flex justify-center gap-4 mt-5 flex-wrap">
-
-    <button
-      onClick={() => changeImage(product["Main Image"])}
-      className={`rounded-xl overflow-hidden border-2 ${
-        selectedImage === product["Main Image"]
-          ? "border-[#5a422a]"
-          : "border-transparent"
-      }`}
-    >
-      <img
-        src={`/images/products/${product["Main Image"]}`}
-        className="w-16 h-16 object-contain p-1"
-      />
-    </button>
-
-    {gallery.map((image: string) => (
-      <button
-        key={image}
-        onClick={() => changeImage(image)}
-        className={`rounded-xl overflow-hidden border-2 ${
-          selectedImage === image
-            ? "border-[#5a422a]"
-            : "border-transparent"
-        }`}
-      >
-        <img
-          src={`/images/products/${image}`}
-          className="w-16 h-16 object-contain p-1"
-        />
-      </button>
-    ))}
-
+    ...
   </div>
 
 </div>

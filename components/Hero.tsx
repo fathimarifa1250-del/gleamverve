@@ -20,7 +20,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
 
         {/* Content */}
-        <div className="relative z-10 flex min-h-[420px] md:min-h-[88vh] items-center">
+        <div className="relative z-10 flex h-[500px] md:h-[680px] items-center">
 
           <div className="w-full md:w-1/2 px-8 md:px-16 lg:px-24">
 

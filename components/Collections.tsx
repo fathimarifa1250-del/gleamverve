@@ -21,6 +21,10 @@ const collections = [
     title: "Studs",
     image: "/images/collections/Studs.jpg",
   },
+   {
+    title: "Pendants",
+    image: "/images/collections/Pendants.jpg",
+  },
   {
     title: "Cuff",
     image: "/images/collections/cuff.jpg",
@@ -37,7 +41,7 @@ const collections = [
 
 export default function Collections() {
   return (
-    <section className="bg-[#f5eee6] px-4 md:px-20 pt-0 pb-8">
+ <section className="bg-[#f5eee6] px-4 md:px-20 pt-20 pb-2">
 
       <div className="mb-4 md:mb-6">
 
